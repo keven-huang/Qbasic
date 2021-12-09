@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include<QString>
 #include<QStringList>
+#include<QFileDialog>
 #include"program.h"
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }

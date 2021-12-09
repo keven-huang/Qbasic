@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-
+#include<QDebug>
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -27,6 +27,7 @@ bool MainWindow::ProcessCmd(QString cmd)
         return cmd_op;
     }
     if(Qlist[0] == "LOAD"){
+
         pro->load();
         return cmd_op;
     }
@@ -76,7 +77,7 @@ void MainWindow::codeLineEdit_return()
             ui->CodeDisplay->append(input);
         }
     } catch (QString error) {
-
+        qDebug()<<error;
     }
 
 }

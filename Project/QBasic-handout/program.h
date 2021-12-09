@@ -3,6 +3,7 @@
 
 #include<QStringList>
 #include <QString>
+#include<map>
 #include "statement.h"
 
 using namespace std;
@@ -15,12 +16,12 @@ public:
     void load();
     void run();
     void deleteStatement(int LineNum);
-    statement* move(int LineNum);
     void ProcessState(QString statement);
     void insertState(int LineNum,statement *);
 private:
     int curLine;
-    statement* head;
+    map<int,statement>::iterator cur_it;
+    map<int,statement> ProGramList;
 };
 
 #endif // PROGRAM_H

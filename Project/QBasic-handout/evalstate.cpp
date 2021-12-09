@@ -6,7 +6,7 @@ evalstate::evalstate()
 
 }
 
-bool evalstate::isDefine(string sym)
+bool evalstate::isDefined(string sym)
 {
     map<string,int>::iterator it = SymTable.find(sym);
     if(it != SymTable.end())
