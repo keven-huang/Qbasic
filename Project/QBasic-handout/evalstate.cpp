@@ -6,22 +6,27 @@ evalstate::evalstate()
 
 }
 
-bool evalstate::isDefined(string sym)
+bool evalstate::isDefined(QString sym)
 {
-    map<string,int>::iterator it = SymTable.find(sym);
+    map<QString,int>::iterator it = SymTable.find(sym);
     if(it != SymTable.end())
         return true;
     else return false;
 }
 
-int evalstate::getValue(string name)
+int evalstate::getValue(QString name)
 {
     return SymTable[name];
 }
 
-void evalstate::inputValue(string name, int val)
+void evalstate::inputValue(QString name, int val)
 {
     SymTable[name] = val;
     return;
+}
+
+void evalstate::clear()
+{
+    SymTable.clear();
 }
 

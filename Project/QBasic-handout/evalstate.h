@@ -2,17 +2,18 @@
 #define EVALSTATE_H
 #include<map>
 #include<cstring>
+#include<QString>
 using namespace std;
 class evalstate
 {
 public:
     evalstate();
-    bool isDefined(string sym);
-    int getValue(string name);
-    void inputValue(string name,int val);
+    bool isDefined(QString sym);
+    int getValue(QString name);
+    void inputValue(QString name,int val);
     void clear();
 private:
-    map<string,int> SymTable;
+    map<QString,int> SymTable;
 };
 
 #endif // EVALSTATE_H

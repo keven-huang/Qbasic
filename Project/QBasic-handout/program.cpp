@@ -2,6 +2,7 @@
 
 program::program()
 {
+    cur_it = ProGramList.begin();
     curLine = 0;
 }
 
@@ -10,26 +11,15 @@ void program::clear()
     ProGramList.clear();
 }
 
-void program::run()
-{
-    for(cur_it = ProGramList.begin(); cur_it != ProGramList.end();cur_it++){
-        cur_it->second.run();
-        if(cur_it->second.type() == GOTO){
-            if(cur_it->second.return2Program()!=-1&&ProGramList.find(cur_it->second.return2Program())!=ProGramList.end()){
-                cur_it = ProGramList.find(cur_it->second.return2Program());
-            }
-            else {
-                throw("GOTO Line error");
-            }
-        }
-    }
-}
 
 void program::deleteStatement(int LineNum)
 {
-
+    if(ProGramList.erase(LineNum)){
+    }
+    else throw "LineNum not exist";
 }
 
+//处理每一句话
 void program::ProcessState(QString StmtOp)
 {
     QStringList Qlist = StmtOp.split(' ',QString::SkipEmptyParts);
@@ -37,46 +27,75 @@ void program::ProcessState(QString StmtOp)
     if(isDigital){
         int Line = Qlist[0].toInt();
         if(Line <= 0 || Line >= 1000000){
-            Line = -1;
+            throw "LineError";
         }
         statement *stmt;
         if(Qlist[1] == "REM"){
-            stmt = new RemStmt();
+            stmt = new statement();
+            stmt->_type = REM;
             stmt->GetContxt(StmtOp);
             stmt->LineNum = Line;
             insertState(Line,stmt);
         }
-        if(Qlist[1] == "LET"){
-
-        }
-        if(Qlist[1] == "PRINT"){
-
-        }
-        if(Qlist[1] == "INPUT"){
-
-        }
-        if(Qlist[1] == "GOTO"){
-
+        else if(Qlist[1] == "LET"){
+            stmt = new statement();
+            stmt->_type = LET;
+            stmt->GetContxt(StmtOp);
+            stmt->LineNum = Line;
             insertState(Line,stmt);
         }
-        if(Qlist[1] == "IF"){
-
+        else if(Qlist[1] == "PRINT"){
+            stmt = new statement();
+            stmt->_type = PRINT;
+            stmt->GetContxt(StmtOp);
+            stmt->LineNum = Line;
+            insertState(Line,stmt);
         }
-        if(Qlist[1] == "END"){
-
+        else if(Qlist[1] == "INPUT"){
+            stmt = new statement();
+            stmt->_type = INPUT;
+            stmt->GetContxt(StmtOp);
+            stmt->LineNum = Line;
+            insertState(Line,stmt);
         }
+        else if(Qlist[1] == "GOTO"){
+            stmt = new statement();
+            stmt->_type = GOTO;
+            stmt->GetContxt(StmtOp);
+            stmt->LineNum = Line;
+            insertState(Line,stmt);
+        }
+        else if(Qlist[1] == "IF"){
+            stmt = new statement();
+            stmt->_type = IF;
+            stmt->GetContxt(StmtOp);
+            stmt->LineNum = Line;
+            insertState(Line,stmt);
+        }
+        else if(Qlist[1] == "END"){
+            stmt = new statement();
+            stmt->_type = END;
+            stmt->GetContxt(StmtOp);
+            stmt->LineNum = Line;
+            insertState(Line,stmt);
+        }
+    }
+    else{
+        throw "input error!";
     }
 }
 
 void program::insertState(int LineNum, statement *a)
 {
-    if(ProGramList.find(LineNum) != ProGramList.end()){
-        ProGramList.insert(pair<int,statement>(LineNum,*a));
-        return;
-    }
-    else{
-        ProGramList[LineNum] = *a;
-        return;
-    }
+    ProGramList[LineNum] = *a;
+    return;
+//    if(ProGramList.find(LineNum) != ProGramList.end()){
+//        ProGramList.insert(pair<int,statement>(LineNum,*a));
+//        return;
+//    }
+//    else{
+//        ProGramList[LineNum] = *a;
+//        return;
+//    }
 }
 

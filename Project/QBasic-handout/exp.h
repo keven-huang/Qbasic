@@ -1,25 +1,22 @@
 #ifndef EXP_H
 #define EXP_H
 
-#include<string>
+#include<QString>
 #include"evalstate.h"
 using namespace std;
 
 enum ExpressionType { CONSTANT, IDENTIFIER, COMPOUND };
-
+//分为三个子类，CONSTANT，IDENTIFIER，COMPUND
 class exp{
 public:
     exp();
     virtual ~exp();
     virtual int eval(evalstate & context) = 0;
-    virtual string toString() = 0;
     virtual ExpressionType type() = 0;
+    virtual QString getIdentifierName() = 0;
 
-    virtual int getConstantValue();
-    virtual string getIdentifierName();
-    virtual string getOperator();
-    virtual exp *getLHS();
-    virtual exp *getRHS();
+    QString op;
+    exp *lhs, *rhs;
 
 };
 
@@ -28,13 +25,10 @@ class ConstantExp: public exp {
 public:
 
    ConstantExp(int val);
-
+   ~ConstantExp();
    virtual int eval(evalstate & context);
-   virtual std::string toString();
    virtual ExpressionType type(){return CONSTANT;}
-
-   virtual int getConstantValue();
-
+   virtual QString getIdentifierName();
 private:
    int value;
 
@@ -44,16 +38,15 @@ class IdentifierExp: public exp {
 
 public:
 
-   IdentifierExp(string name);
-
+   IdentifierExp(QString name);
+   ~IdentifierExp();
    virtual int eval(evalstate & context);
-   virtual std::string toString();
    virtual ExpressionType type(){return IDENTIFIER;}
-   virtual string getIdentifierName();
+   virtual QString getIdentifierName();
 
 private:
 
-   std::string name;
+   QString name;
 
 };
 
@@ -61,22 +54,11 @@ class CompoundExp: public exp {
 
 public:
 
-   CompoundExp(string op, exp *lhs, exp *rhs);
-   virtual ~CompoundExp();
-
+   CompoundExp(QString op, exp *lhs, exp *rhs);
+   ~CompoundExp();
    virtual int eval(evalstate & context);
-   virtual std::string toString();
    virtual ExpressionType type(){return COMPOUND;}
-
-   virtual std::string getOperator();
-   virtual exp *getLHS();
-   virtual exp *getRHS();
-
-private:
-
-   std::string op;
-   exp *lhs, *rhs;
-
+   virtual QString getIdentifierName();
 };
 
 

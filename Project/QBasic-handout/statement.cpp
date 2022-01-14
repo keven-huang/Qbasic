@@ -9,16 +9,22 @@ statement::statement(QString contxt)
     GetContxt(contxt);
 }
 
-statement::~statement()
+StmtType statement::type()
 {
+    return _type;
 }
 
+//处理input数据
 void statement::GetContxt(QString contxt)
 {
-
+    input = contxt;
+    if(_type==IF||_type == REM){
+        ConText = contxt;
+        return;
+    }
     QStringList Qlist = contxt.split(' ',QString::SkipEmptyParts);
     QString exp = "";
-    for(int i = 2;i<contxt.length();++i){
+    for(int i = 2;i<Qlist.length();i++){
         exp += Qlist[i];
     }
     ConText = exp;
@@ -26,22 +32,3 @@ void statement::GetContxt(QString contxt)
 }
 
 
-int GoToStmt::return2Program()
-{
-    bool isDigital=QString(ConText).contains(QRegExp("^\\d+$"));
-    if(isDigital){
-        int Go2Line = ConText.toInt();
-        if(Go2Line < 0 || Go2Line> 100000){
-            return -1;
-        }
-        return Go2Line;
-    }
-    else{
-        return -1;
-    }
-}
-
-void ENDStmt::run()
-{
-    return;
-}
